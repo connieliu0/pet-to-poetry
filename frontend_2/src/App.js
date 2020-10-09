@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import FastAverageColor from 'fast-average-color';
 import P5Wrapper from 'react-p5-wrapper';
-import * as ml5 from "ml5";
+import ml5 from 'ml5';
 import './App.css';
 
 function App() {
@@ -57,36 +57,18 @@ function App() {
 
 
   const sketch = p => {
-    let rotation = 0;
 
     p.setup = function () {
-      p.createCanvas(600, 400, p.WEBGL);
-      // p.noCanvas();
+      p.noCanvas();
 
       // Create the LSTM Generator passing it the model directory
-      lstm = ml5.LSTMGenerator('./data/', modelReady);
+      lstm = ml5.charRNN('./data/', p.modelReady);
+    };
+    p.modelReady= function () {
+      p.select('#status').html('Model Loaded');
     };
 
-    p.myCustomRedrawAccordingToNewPropsHandler = function (props) {
-      if (props.rotation !== null) {
-        rotation = props.rotation * Math.PI / 180;
-      }
-    };
-
-    p.draw = function () {
-      p.background(100);
-      p.normalMaterial();
-      p.noStroke();
-      p.push();
-      p.rotateY(rotation);
-      p.box(100);
-      p.pop();
-    };
-
-    function modelReady() {
-    }
-  }
-
+  };
   // Generate new text
   const generate = () => {
     if (text.length > 0) {
@@ -127,12 +109,13 @@ function App() {
         <div className="example">
           <p>seed text: <input id="textInput" value={text} onChange={e => setText(e.target.value)} /></p>
           <p>length:
-            <input id="lenSlider" min="10" max="500" value={length} type="range" onChange={e => setLength(e.target.value)} />
+            <input id="lengthSlider" min="10" max="500" value={length} type="range" onChange={e => setLength(e.target.value)} />
             <span id="length">{toString(length)}</span>
           </p>
           {/* <p>temperature:<input id="tempSlider" min="0" max="1" step="0.01" type="range" /><span id="temperature">0.5</span></p> */}
           {/* <p id="status">Loading Model</p> */}
           <button id="generate" onClick={generate}>generate</button>
+          <p id="status">Loading Model</p>
           <p id="result">{res}</p>
         </div>
       </div>
