@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import FastAverageColor from 'fast-average-color';
 import P5Wrapper from 'react-p5-wrapper';
-import ml5 from 'ml5';
+import sketch from './sketch.js';
 import './App.css';
 
 function App() {
@@ -50,45 +50,6 @@ function App() {
     setTemp(0.33);
   }
 
-  let lstm;
-  const [res, setRes] = useState("");
-  const [text, setText] = useState("the meaning of life is...");
-  const [length, setLength] = useState(100);
-
-
-  const sketch = p => {
-
-    p.setup = function () {
-      p.noCanvas();
-
-      // Create the LSTM Generator passing it the model directory
-      lstm = ml5.charRNN('./data/', p.modelReady);
-    };
-    p.modelReady= function () {
-      p.select('#status').html('Model Loaded');
-    };
-
-  };
-  // Generate new text
-  const generate = () => {
-    if (text.length > 0) {
-      // Seed text, temperature, length to outputs
-      // TODO: What are the defaults?
-      let data = {
-        seed: text,
-        temperature: temp,
-        length: length
-      };
-
-      // Generate text with the lstm
-      lstm.generate(data, gotData);
-
-      function gotData(err, result) {
-        setRes(text + result);
-      }
-    }
-  }
-
   return (
     <div className="App">
       {/* <form> */}
@@ -102,23 +63,17 @@ function App() {
       <br />
       <button id="upload" onClick={upload}>upload</button>
       {/* </form> */}
+      <h1> LSTM Text Generation Example</h1>
+               <h2> This example uses a pre-trained model on a corpus of Emily Dickinson</h2>
+<div class="example">
+    <p>seed text: <input id="textInput" value="The meaning of life is"/></p>
+    <p>length: <input id="lenSlider" min="10" max="500" value="100" type="range"/> <span id="length">100</span></p>
+    <p>temperature:<input id="tempSlider" min="0" max="1" step="0.01" type="range"/><span id="temperature">0.5</span></p>
+    <p id="status">Loading Model</p>
+    <button id="generate">generate</button>
+    <p id="result"></p>
       <P5Wrapper sketch={sketch} />
-      <div id="">
-        <h1> LSTM Text Generation Example</h1>
-        <h2> This example uses a pre-trained model on a corpus of Emily Dickinson</h2>
-        <div className="example">
-          <p>seed text: <input id="textInput" value={text} onChange={e => setText(e.target.value)} /></p>
-          <p>length:
-            <input id="lengthSlider" min="10" max="500" value={length} type="range" onChange={e => setLength(e.target.value)} />
-            <span id="length">{toString(length)}</span>
-          </p>
-          {/* <p>temperature:<input id="tempSlider" min="0" max="1" step="0.01" type="range" /><span id="temperature">0.5</span></p> */}
-          {/* <p id="status">Loading Model</p> */}
-          <button id="generate" onClick={generate}>generate</button>
-          <p id="status">Loading Model</p>
-          <p id="result">{res}</p>
-        </div>
-      </div>
+     </div>
     </div>
 
   );
