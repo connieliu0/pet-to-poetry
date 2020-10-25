@@ -62,7 +62,7 @@ p.generate=function() {
         lstm.generate(data, p.gotData());
 
         // When it's done
-        p.gotData= function(err, result){
+        p.gotData= (err, result)=>{
             // Update the status log
             p.select('#status').html('Ready!');
             p.select('#result').html(txt + result);
