@@ -32,7 +32,7 @@ function updateSliders() {
 }
 
 function modelReady() {
-    select('#status').html('Model Loaded');
+    select('#status').html('Model');
 }
 
 // Generate new text
@@ -43,7 +43,7 @@ function generate() {
     // Grab the original text
     let original = textInput.value();
     // Make it to lower case
-    let txt = original.toLowerCase();
+    let txt = original.toUpperCase();
 
     // Check if there's something to send
     if (txt.length > 0) {
@@ -53,7 +53,7 @@ function generate() {
         let data = {
             seed: txt,
             temperature: tempSlider.value(),
-            length: lengthSlider.value()
+            length: 25
         };
 
         // Generate text with the lstm
