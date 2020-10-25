@@ -6,63 +6,32 @@ let textInput;
 let lengthSlider;
 let tempSlider;
 let button;
-let R;
-let G;
-let B;
-let luminence;
-let lengthvar;
 
-let img;
-
-function preload(){
-    img = loadImage("2.jpg");
-}
-let totalR = 0;
-let totalG = 0;
-let totalB = 0;
-let sampleN = 10000;
 function setup() {
     noCanvas();
+
     // Create the LSTM Generator passing it the model directory
     lstm = ml5.LSTMGenerator('./data/', modelReady);
+
     // Grab the DOM elements
     textInput = select('#textInput');
-    // lengthSlider = select('#lenSlider');
+    lengthSlider = select('#lenSlider');
     tempSlider = select('#tempSlider');
     button = select('#generate');
 
     // DOM element events
     button.mousePressed(generate);
-    // lengthSlider.input(updateSliders);
+    lengthSlider.input(updateSliders);
     tempSlider.input(updateSliders);
 }
 
 // Update the slider values
 function updateSliders() {
-    // select('#length').html(lengthSlider.value());
+    select('#length').html(lengthSlider.value());
     select('#temperature').html(tempSlider.value());
 }
 
 function modelReady() {
-    for(let i = 0; i < sampleN; i++){
-        let x = random(img.width);
-        let y = random(img.height);
-        let c = img.get(x,y);
-        totalR += c[0];
-        totalG += c[1];
-        totalB += c[2];
-      }
-      R=totalR/sampleN;
-      G=totalG/sampleN;
-      B=totalB/sampleN;
-      luminence= R + G + B;
-      console.log(luminence);
-      if (luminence<50){
-          lengthvar=20;
-      }
-      else{
-          lengthvar=5;
-      }
     select('#status').html('Model Loaded');
 }
 
@@ -84,7 +53,7 @@ function generate() {
         let data = {
             seed: txt,
             temperature: tempSlider.value(),
-            length: lengthvar
+            length: lengthSlider.value()
         };
 
         // Generate text with the lstm
