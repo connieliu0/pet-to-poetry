@@ -54,40 +54,41 @@ function App() {
   const [res, setRes] = useState("");
   const [text, setText] = useState("the meaning of life is...");
   const [length, setLength] = useState(100);
-
-
   const sketch = p => {
-
+    const yolo= ml5.YOLO(p.modelReady);
+    let img;
+    let objects=[];
+    let status;
     p.setup = function () {
-      p.noCanvas();
-
-      // Create the LSTM Generator passing it the model directory
-      lstm = ml5.charRNN('./data/', p.modelReady);
+      p.createCanvas(640,420);
+      img = p.createImg('download.png', p.imageReady);
+      img.hide();
+      img.size(640, 420);
     };
     p.modelReady= function () {
-      p.select('#status').html('Model Loaded');
+      p.console.log("model Ready!");
+      status=true;
     };
-
-  };
-  // Generate new text
-  const generate = () => {
-    if (text.length > 0) {
-      // Seed text, temperature, length to outputs
-      // TODO: What are the defaults?
-      let data = {
-        seed: text,
-        temperature: temp,
-        length: length
-      };
-
-      // Generate text with the lstm
-      lstm.generate(data, gotData);
-
-      function gotData(err, result) {
-        setRes(text + result);
+    p.imageReady=function(){
+      p.console.log('Detecting')
+      yolo.detect(img, p.gotResult());
+    };
+    p.draw=function(){
+      if (status != undefined) {
+        p.image(img, 0, 0)
+        for (let i = 0; i < objects.length; i++) {
+          p.noStroke();
+          p.fill(0, 255, 0);
+          p.text(objects[i].label + " " + p.nfc(objects[i].confidence * 100.0, 2) + "%", objects[i].x * p.width + 5, objects[i].y * p.height + 15);
+          p.noFill();
+          p.strokeWeight(4);
+          p.stroke(0, 255, 0);
+          p.rect(objects[i].x * p.width, objects[i].y * p.height, objects[i].w * p.width, objects[i].h * p.height);
+        }
       }
-    }
-  }
+    };
+  };
+
 
   return (
     <div className="App">
@@ -103,22 +104,6 @@ function App() {
       <button id="upload" onClick={upload}>upload</button>
       {/* </form> */}
       <P5Wrapper sketch={sketch} />
-      <div id="">
-        <h1> LSTM Text Generation Example</h1>
-        <h2> This example uses a pre-trained model on a corpus of Emily Dickinson</h2>
-        <div className="example">
-          <p>seed text: <input id="textInput" value={text} onChange={e => setText(e.target.value)} /></p>
-          <p>length:
-            <input id="lengthSlider" min="10" max="500" value={length} type="range" onChange={e => setLength(e.target.value)} />
-            <span id="length">{toString(length)}</span>
-          </p>
-          {/* <p>temperature:<input id="tempSlider" min="0" max="1" step="0.01" type="range" /><span id="temperature">0.5</span></p> */}
-          {/* <p id="status">Loading Model</p> */}
-          <button id="generate" onClick={generate}>generate</button>
-          <p id="status">Loading Model</p>
-          <p id="result">{res}</p>
-        </div>
-      </div>
     </div>
 
   );
