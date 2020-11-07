@@ -6,11 +6,27 @@ import './App.css';
 
 function App() {
   const fac = new FastAverageColor()
-  // a list of image names
-  // const [img, setImg] = useState({});
   const [src, setSrc] = useState("");
-  const [temp, setTemp] = useState(0);
-
+  const [noun1, setNoun1] = useState("");
+  const [noun2, setNoun2] = useState("");
+  const [verb, setVerb] = useState("");
+  const [structure, setStructure] = useState("");
+  const [poem, setPoem] = useState("");
+  var newstring="";
+  const happyNouns=["Sun",  "Cloud", "Star", "Hope", "Laughter", "Dream", "Victory", "Joy"
+  ]
+  const happyVerbs=["Soar", "Spring", "Fly", "Skip"
+  ]
+  const sadNouns=["Ocean", "Thunder", "Darkness",  "Moon", "Crater", "Despair"    
+  ]
+  const sadVerbs=["Sludge",  "Slog", "Drown", "Drag"    
+  ]
+  const structures=[
+    "I miss noun1, hidden away in noun2’s warm light\n\nThe noun1 verbs and verbs",
+    "noun1 sleeps, noun2 verbs\n\nverb well, noun1",
+    "I see noun1, above the noun2. noun1 visits noun2 happily, verbing",
+    "noun1 runs, verbs to the noun2\n\nnoun1 where are you verbing?\n\nverb away, noun1."
+  ]
   const readURL = file => {
     // Check if the file is an image.
     if (file.type && file.type.indexOf('image') === -1) {
@@ -42,53 +58,50 @@ function App() {
     const img = document.getElementById("output");
     const color = fac.getColor(img);
     console.log(color);
-    calcTemp(color.isDark);
+    setNounVerb(color.isDark);
+    setPoemStructure(color.value);
+    makePoem();
   }
 
-  const calcTemp = isDark => {
-    if (isDark) setTemp(1);
-    setTemp(0.33);
+  const setPoemStructure=value=>{
+    var total=value[0]+value[1]+value[2]
+    if (total<192){
+      setStructure(structures[0]);
+    }
+    else if(total<384){
+      setStructure(structures[1]);
+    }
+    else if(total<576){
+      setStructure(structures[2]);
+
+    }
+    else if(total<765){
+      setStructure(structures[3]);
+    }
   }
 
-  let lstm;
-  const [res, setRes] = useState("");
-  const [text, setText] = useState("the meaning of life is...");
-  const [length, setLength] = useState(100);
-  const sketch = p => {
-    const yolo= ml5.YOLO(p.modelReady);
-    let img;
-    let objects=[];
-    let status;
-    p.setup = function () {
-      p.createCanvas(640,420);
-      img = p.createImg('download.png', p.imageReady);
-      img.hide();
-      img.size(640, 420);
-    };
-    p.modelReady= function () {
-      p.console.log("model Ready!");
-      status=true;
-    };
-    p.imageReady=function(){
-      p.console.log('Detecting')
-      yolo.detect(img, p.gotResult());
-    };
-    p.draw=function(){
-      if (status != undefined) {
-        p.image(img, 0, 0)
-        for (let i = 0; i < objects.length; i++) {
-          p.noStroke();
-          p.fill(0, 255, 0);
-          p.text(objects[i].label + " " + p.nfc(objects[i].confidence * 100.0, 2) + "%", objects[i].x * p.width + 5, objects[i].y * p.height + 15);
-          p.noFill();
-          p.strokeWeight(4);
-          p.stroke(0, 255, 0);
-          p.rect(objects[i].x * p.width, objects[i].y * p.height, objects[i].w * p.width, objects[i].h * p.height);
-        }
-      }
-    };
-  };
+  const setNounVerb = isDark => {
+    if (isDark){
+      setNoun1(sadNouns[Math.floor(Math.random() * sadNouns.length)]);
+      setNoun2(sadNouns[Math.floor(Math.random() * sadNouns.length)]);
+      setVerb(sadVerbs[Math.floor(Math.random() * sadVerbs.length)]);
+    }
+    else{
+      setNoun1(happyNouns[Math.floor(Math.random() * happyNouns.length)]);
+      setNoun2(happyNouns[Math.floor(Math.random() * happyNouns.length)]);
+      setVerb(happyVerbs[Math.floor(Math.random() * happyVerbs.length)]);
+    }
+  }
+  const makePoem= () => {
+    console.log(noun1);
+    console.log(noun2);
+    console.log(verb);
 
+    newstring=structure.replaceAll("noun1", noun1);
+    newstring=newstring.replaceAll("noun2", noun2);
+    newstring=newstring.replaceAll("verb", verb);
+    setPoem(newstring);
+  }
 
   return (
     <div className="App">
@@ -103,9 +116,9 @@ function App() {
       <br />
       <button id="upload" onClick={upload}>upload</button>
       {/* </form> */}
-      <P5Wrapper sketch={sketch} />
-    </div>
-
+      {/* <button id="generate" onClick={generate}>generate</button> */}
+      <p id="result">{poem}</p>
+        </div>
   );
 }
 
