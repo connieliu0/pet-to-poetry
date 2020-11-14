@@ -51,29 +51,35 @@ function App() {
   }
 
   let lstm;
-  const [res, setRes] = useState("");
+  const [res, setRes] = useState("res");
   const [text, setText] = useState("the meaning of life is...");
   const [length, setLength] = useState(100);
+  const [status, setStatus] = useState("Model Loading");
 
 
   const sketch = p => {
+    console.log("running sketch");
 
     p.setup = function () {
+      console.log("p.setup running");
       p.noCanvas();
 
       // Create the LSTM Generator passing it the model directory
-      lstm = ml5.charRNN('./data/', p.modelReady);
+      lstm = ml5.charRNN('./data/', p.modelReady());
+      console.log("lstm", lstm)
     };
-    p.modelReady= function () {
-      p.select('#status').html('Model Loaded');
+    p.modelReady = () => {
+      console.log("modelReady running");
+      setStatus("Model Loaded");
     };
 
   };
   // Generate new text
   const generate = () => {
+    console.log("generate running");
+
     if (text.length > 0) {
       // Seed text, temperature, length to outputs
-      // TODO: What are the defaults?
       let data = {
         seed: text,
         temperature: temp,
@@ -81,10 +87,12 @@ function App() {
       };
 
       // Generate text with the lstm
-      lstm.generate(data, gotData);
+      lstm.generate(data, gotData());
 
       function gotData(err, result) {
-        setRes(text + result);
+        console.log(result);
+        console.log("got data");
+        setRes(res + result);
       }
     }
   }
@@ -110,12 +118,10 @@ function App() {
           <p>seed text: <input id="textInput" value={text} onChange={e => setText(e.target.value)} /></p>
           <p>length:
             <input id="lengthSlider" min="10" max="500" value={length} type="range" onChange={e => setLength(e.target.value)} />
-            <span id="length">{toString(length)}</span>
+            <span id="length">{length}</span>
           </p>
-          {/* <p>temperature:<input id="tempSlider" min="0" max="1" step="0.01" type="range" /><span id="temperature">0.5</span></p> */}
-          {/* <p id="status">Loading Model</p> */}
           <button id="generate" onClick={generate}>generate</button>
-          <p id="status">Loading Model</p>
+          <p id="status">{status}</p>
           <p id="result">{res}</p>
         </div>
       </div>
