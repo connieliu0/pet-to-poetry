@@ -10,6 +10,7 @@ function App() {
   const [verb, setVerb] = useState("");
   const [structure, setStructure] = useState("");
   const [poem, setPoem] = useState("");
+  const [yolo, setYolo] = useState([]);
   var newstring = "";
   const happyNouns = ["Sun", "Cloud", "Star", "Hope", "Laughter", "Dream", "Victory", "Joy"
   ]
@@ -53,19 +54,23 @@ function App() {
   }
 
   const UseYolo = src => {
-    // with users' uploaded data
-    // fetch(`/parseImages/${src}`).then(res => res.json()).then(data => {
-    //   console.log(data);
-    // })
-    fetch('/parseImages').then(res => res.json()).then(data => {
-      console.log(data.resp2);
-    })
+    console.log(src)
+    fetch(`/parseImages`)
+      .then(res => res.json())
+      .then(data => {
+        const res = data.yoloRes.map((r, i) => {
+          const idx = r.indexOf(' ');
+          return r.substr(0, idx);
+        })
+        setYolo(res);
+        console.log(data.yoloRes);
+      })
   }
 
   const upload = () => {
     const img = document.getElementById("output");
     // console.log(img.src);
-    UseYolo(img.src);
+    UseYolo(img);
     const color = fac.getColor(img);
     console.log(color);
     setNounVerb(color.isDark);
@@ -93,12 +98,12 @@ function App() {
   const setNounVerb = isDark => {
     if (isDark) {
       setNoun1(sadNouns[Math.floor(Math.random() * sadNouns.length)]);
-      setNoun2(sadNouns[Math.floor(Math.random() * sadNouns.length)]);
+      setNoun2(yolo[Math.floor(Math.random() * sadNouns.length)]);
       setVerb(sadVerbs[Math.floor(Math.random() * sadVerbs.length)]);
     }
     else {
       setNoun1(happyNouns[Math.floor(Math.random() * happyNouns.length)]);
-      setNoun2(happyNouns[Math.floor(Math.random() * happyNouns.length)]);
+      setNoun2(yolo[Math.floor(Math.random() * happyNouns.length)]);
       setVerb(happyVerbs[Math.floor(Math.random() * happyVerbs.length)]);
     }
   }
