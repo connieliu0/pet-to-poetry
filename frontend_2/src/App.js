@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import FastAverageColor from 'fast-average-color';
 import './App.css';
+const { HostedModel } = require('@runwayml/hosted-models');
 
 function App() {
   const fac = new FastAverageColor()
@@ -10,20 +11,21 @@ function App() {
   const [verb, setVerb] = useState("");
   const [structure, setStructure] = useState("");
   const [poem, setPoem] = useState("");
+  const [generated_text, setText] = useState("");
   var newstring = "";
-  const happyNouns = ["Sun", "Cloud", "Star", "Hope", "Laughter", "Dream", "Victory", "Joy"
+  const happyNouns = ["sun", "cloud", "star", "hope", "laughter", "dream", "victory", "joy"
   ]
-  const happyVerbs = ["Soar", "Spring", "Fly", "Skip"
+  const happyVerbs = ["soar", "spring", "jump", "skip"
   ]
-  const sadNouns = ["Ocean", "Thunder", "Darkness", "Moon", "Crater", "Despair"
+  const sadNouns = ["ocean", "thunder", "darkness", "moon", "crater", "despair"
   ]
-  const sadVerbs = ["Sludge", "Slog", "Drown", "Drag"
+  const sadVerbs = ["sludge", "slog", "drown", "drag"
   ]
   const structures = [
-    "I miss noun1, hidden away in noun2’s warm light\n\nThe noun1 verbs and verbs",
-    "noun1 sleeps, noun2 verbs\n\nverb well, noun1",
-    "I see noun1, above the noun2. noun1 visits noun2 happily, verbing",
-    "noun1 runs, verbs to the noun2\n\nnoun1 where are you verbing?\n\nverb away, noun1."
+    "He loves the noun1, and noun2 is joyful today.\n\nThe noun2 verbs and verbs",
+    "The noun1 sleeps, the noun2 verbs, \n\nverb well, noun1.",
+    "I see the noun1, above the noun2. The noun1 visits noun2 happily, verbing.",
+    "The noun1 verbs, verbs to the noun2. \n\nnoun1 where are you verbing?\n\nverb away, noun1."
   ]
 
   const readURL = file => {
@@ -52,20 +54,21 @@ function App() {
     readURL(i);
   }
 
-  const UseYolo = src => {
-    // with users' uploaded data
-    // fetch(`/parseImages/${src}`).then(res => res.json()).then(data => {
-    //   console.log(data);
-    // })
-    fetch('/parseImages').then(res => res.json()).then(data => {
-      console.log(data.resp2);
-    })
-  }
+  // const UseYolo = src => {
+  //   // with users' uploaded data
+  //   // fetch(`/parseImages/${src}`).then(res => res.json()).then(data => {
+  //   //   console.log(data);
+  //   // })
+  //   fetch('/parseImages').then(res => res.json()).then(data => {
+  //     console.log(data.resp2);
+  //     const noun=data.resp2;
+  //   })
+  // }
 
   const upload = () => {
     const img = document.getElementById("output");
     // console.log(img.src);
-    UseYolo(img.src);
+    // UseYolo(img.src);
     const color = fac.getColor(img);
     console.log(color);
     setNounVerb(color.isDark);
@@ -112,7 +115,25 @@ function App() {
     newstring = newstring.replaceAll("verb", verb);
     setPoem(newstring);
   }
+  const model = new HostedModel({
+    url: "https://fa20-research.hosted-models.runwayml.cloud/v1/",
+    token: "aKCIwe4Fvu9udgsC5VGbKg==",
+  });
+  //// You can use the info() method to see what type of input object the model expects
+  // model.info().then(info => console.log(info));
+  const makeGenerated=()=>{
+  const inputs = {
+    "input_prompt": poem,
+    "length": 20,
+    "temperature": .6,
+    "top_p": .7
+  };
 
+  model.query(inputs).then(outputs => {
+    setText(outputs.generated_text);
+    // use the outputs in your project
+  });
+};
   return (
     <div className="App">
       {/* <form> */}
@@ -128,6 +149,8 @@ function App() {
       {/* </form> */}
       {/* <button id="generate" onClick={generate}>generate</button> */}
       <p id="result">{poem}</p>
+      <button id="generate" onClick={makeGenerated}>generate</button>
+      <p id="result">{generated_text}</p>
     </div>
   );
 }
