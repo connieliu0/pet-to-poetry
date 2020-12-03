@@ -13,19 +13,19 @@ function App() {
   const [poem, setPoem] = useState("");
   const [generated_text, setText] = useState("");
   var newstring = "";
-  const happyNouns = ["sun", "cloud", "star", "hope", "laughter", "dream", "victory", "joy"
+  const happyNouns = ["sun", "cloud", "star", "flower"
   ]
-  const happyVerbs = ["soar", "spring", "jump", "skip"
+  const happyVerbs = ["soar", "spring", "jump", 
   ]
-  const sadNouns = ["ocean", "thunder", "darkness", "moon", "crater", "despair"
+  const sadNouns = ["ocean", "thunder", "darkness", "moon", "snake"
   ]
   const sadVerbs = ["sludge", "slog", "drown", "drag"
   ]
   const structures = [
-    "He loves the noun1, and noun2 is joyful today.\n\nThe noun2 verbs and verbs",
-    "The noun1 sleeps, the noun2 verbs, \n\nverb well, noun1.",
-    "I see the noun1, above the noun2. The noun1 visits noun2 happily, verbing.",
-    "The noun1 verbs, verbs to the noun2. \n\nnoun1 where are you verbing?\n\nverb away, noun1."
+    "He loves the noun1, and noun2 is joyful today.",
+    "The noun1 sleeps, the noun2 verbs.",
+    "I see the noun1, above the noun2.",
+    "The noun1 verbs, verbs to the noun2."
   ]
 
   const readURL = file => {
@@ -132,6 +132,7 @@ function App() {
   model.query(inputs).then(outputs => {
     setText(outputs.generated_text);
     // use the outputs in your project
+    console.log(outputs.generated_text);
   });
 };
   return (
