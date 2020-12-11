@@ -22,7 +22,7 @@ function App() {
   const sadVerbs = ["sludge", "slog", "drown", "drag"
   ]
   const structures = [
-    "He loves the noun1, and noun2 is joyful today.",
+    "He loves the noun1, and he is joyful today.",
     "The noun1 sleeps, the noun2 verbs.",
     "I see the noun1, above the noun2.",
     "The noun1 verbs, verbs to the noun2."
@@ -151,6 +151,7 @@ function App() {
       {/* <button id="generate" onClick={generate}>generate</button> */}
       <p id="result">{poem}</p>
       <button id="generate" onClick={makeGenerated}>generate</button>
+      {console.log(poem)}
       <p id="result">{generated_text}</p>
     </div>
   );
