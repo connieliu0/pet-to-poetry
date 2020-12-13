@@ -7,6 +7,18 @@ Yolo v3 is an algorithm that uses deep convolutional neural networks to detect o
 ### Prerequisites
 This project is written in Python 3.6.6 using Tensorflow (deep learning), NumPy (numerical computing), Pillow (image processing), OpenCV (computer vision) and seaborn (visualization) packages.
 
+This project needs the virtual environment, for mac users, that is to run the following commands:
+```
+python3 -m venv venv
+. venv/bin/activate
+```
+and for Windows users:
+```
+py -3 -m venv venv
+venv\Scripts\activate
+```
+
+After activating the virtual environment, run the following commands to install packages
 ```
 pip install -r requirements.txt
 ```
@@ -47,13 +59,6 @@ detection_1.jpg
 detection_2.jpg
 ```
 ![alt text](https://github.com/heartkilla/yolo-v3/blob/master/data/detection_examples/detection_2.jpg)
-### Video example
-You can also run the script with video files.
-```
-python detect.py video 0.5 0.5 data/video/shinjuku.mp4
-```
-The detections will be saved as `detections.mp4` file.
-![alt text](https://github.com/heartkilla/yolo-v3/blob/master/data/detection_examples/detections.gif)
 
 ## To-Do List
 * Model training
