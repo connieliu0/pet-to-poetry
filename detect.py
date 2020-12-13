@@ -19,6 +19,8 @@ import cv2
 from yolo_v3 import Yolo_v3
 from utils import load_images, load_class_names, draw_boxes, draw_frame
 
+tf.compat.v1.disable_eager_execution()
+
 _MODEL_SIZE = (416, 416)
 _CLASS_NAMES_FILE = './data/labels/coco.names'
 _MAX_OUTPUT_SIZE = 20
@@ -36,24 +38,29 @@ def main(type, iou_threshold, confidence_threshold, input_names):
     if type == 'images':
         batch_size = len(input_names)
         batch = load_images(input_names, model_size=_MODEL_SIZE)
-        inputs = tf.placeholder(tf.float32, [batch_size, *_MODEL_SIZE, 3])
-        detections = model(inputs, training=False)
-        saver = tf.train.Saver(tf.global_variables(scope='yolo_v3_model'))
+        inputs = tf.compat.v1.placeholder(
+            tf.float32, [batch_size, *_MODEL_SIZE, 3])
+        detections = model(inputs=inputs, training=False)
+        saver = tf.compat.v1.train.Saver(
+            tf.compat.v1.global_variables(scope='yolo_v3_model'))
 
-        with tf.Session() as sess:
+        with tf.compat.v1.Session() as sess:
             saver.restore(sess, './weights/model.ckpt')
             detection_result = sess.run(detections, feed_dict={inputs: batch})
 
-        draw_boxes(input_names, detection_result, class_names, _MODEL_SIZE)
+        res = draw_boxes(input_names, detection_result,
+                         class_names, _MODEL_SIZE)
 
         print('Detections have been saved successfully.')
+
+        return res
 
     elif type == 'video':
         inputs = tf.placeholder(tf.float32, [1, *_MODEL_SIZE, 3])
         detections = model(inputs, training=False)
         saver = tf.train.Saver(tf.global_variables(scope='yolo_v3_model'))
 
-        with tf.Session() as sess:
+        with tf.compat.v1.Session() as sess:
             saver.restore(sess, './weights/model.ckpt')
 
             win_name = 'Video detection'
@@ -93,8 +100,9 @@ def main(type, iou_threshold, confidence_threshold, input_names):
                 print('Detections have been saved successfully.')
 
     else:
-        raise ValueError("Inappropriate data type. Please choose either 'video' or 'images'.")
+        raise ValueError(
+            "Inappropriate data type. Please choose either 'video' or 'images'.")
 
 
-if __name__ == '__main__':
-    main(sys.argv[1], float(sys.argv[2]), float(sys.argv[3]), sys.argv[4:])
+# if __name__ == '__main__':
+#     main(type=sys.argv[1], iou_threshold=float(sys.argv[2]), confidence_threshold=float(sys.argv[3]), input_names=sys.argv[4:])

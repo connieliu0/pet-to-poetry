@@ -36,7 +36,7 @@ def load_weights(variables, file_name):
                 num_params = np.prod(shape)
                 var_weights = weights[ptr:ptr + num_params].reshape(shape)
                 ptr += num_params
-                assign_ops.append(tf.assign(var, var_weights))
+                assign_ops.append(tf.compat.v1.assign(var, var_weights))
 
             shape = conv_var.shape.as_list()
             num_params = np.prod(shape)
@@ -44,7 +44,7 @@ def load_weights(variables, file_name):
                 (shape[3], shape[2], shape[0], shape[1]))
             var_weights = np.transpose(var_weights, (2, 3, 1, 0))
             ptr += num_params
-            assign_ops.append(tf.assign(conv_var, var_weights))
+            assign_ops.append(tf.compat.v1.assign(conv_var, var_weights))
 
         # Loading weights for Yolo part.
         # 7th, 15th and 23rd convolution layer has biases and no batch norm.
@@ -98,16 +98,17 @@ def main():
                     iou_threshold=0.5,
                     confidence_threshold=0.5)
 
+
     inputs = tf.placeholder(tf.float32, [1, 416, 416, 3])
 
     model(inputs, training=False)
 
-    model_vars = tf.global_variables(scope='yolo_v3_model')
+    model_vars = tf.compat.v1.global_variables(scope='yolo_v3_model')
     assign_ops = load_weights(model_vars, './weights/yolov3.weights')
 
-    saver = tf.train.Saver(tf.global_variables(scope='yolo_v3_model'))
+    saver = tf.compat.v1.train.Saver(tf.compat.v1.global_variables(scope='yolo_v3_model'))
 
-    with tf.Session() as sess:
+    with tf.compat.v1.Session() as sess:
         sess.run(assign_ops)
         saver.save(sess, './weights/model.ckpt')
         print('Model has been saved successfully.')

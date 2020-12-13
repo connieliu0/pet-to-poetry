@@ -47,6 +47,7 @@ def draw_boxes(img_names, boxes_dicts, class_names, model_size):
     Returns:
         None.
     """
+    result = []
     colors = ((np.array(color_palette("hls", 80)) * 255)).astype(np.uint8)
     for num, img_name, boxes_dict in zip(range(len(img_names)), img_names,
                                          boxes_dicts):
@@ -79,10 +80,13 @@ def draw_boxes(img_names, boxes_dicts, class_names, model_size):
                               font=font)
                     print('{} {:.2f}%'.format(class_names[cls],
                                               confidence * 100))
+                    result.append(text)
 
         rgb_img = img.convert('RGB')
 
         rgb_img.save('./detections/detection_' + str(num + 1) + '.jpg')
+
+        return result
 
 
 def draw_frame(frame, frame_size, boxes_dicts, class_names, model_size):
@@ -97,7 +101,8 @@ def draw_frame(frame, frame_size, boxes_dicts, class_names, model_size):
         None.
     """
     boxes_dict = boxes_dicts[0]
-    resize_factor = (frame_size[0] / model_size[1], frame_size[1] / model_size[0])
+    resize_factor = (frame_size[0] / model_size[1],
+                     frame_size[1] / model_size[0])
     colors = ((np.array(color_palette("hls", 80)) * 255)).astype(np.uint8)
     for cls in range(len(class_names)):
         boxes = boxes_dict[cls]
@@ -107,12 +112,14 @@ def draw_frame(frame, frame_size, boxes_dicts, class_names, model_size):
             for box in boxes:
                 xy = box[:4]
                 xy = [int(xy[i] * resize_factor[i % 2]) for i in range(4)]
-                cv2.rectangle(frame, (xy[0], xy[1]), (xy[2], xy[3]), color[::-1], 2)
+                cv2.rectangle(frame, (xy[0], xy[1]),
+                              (xy[2], xy[3]), color[::-1], 2)
                 (test_width, text_height), baseline = cv2.getTextSize(class_names[cls],
                                                                       cv2.FONT_HERSHEY_SIMPLEX,
                                                                       0.75, 1)
                 cv2.rectangle(frame, (xy[0], xy[1]),
-                              (xy[0] + test_width, xy[1] - text_height - baseline),
+                              (xy[0] + test_width, xy[1] -
+                               text_height - baseline),
                               color[::-1], thickness=cv2.FILLED)
                 cv2.putText(frame, class_names[cls], (xy[0], xy[1] - baseline),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 0), 1)
