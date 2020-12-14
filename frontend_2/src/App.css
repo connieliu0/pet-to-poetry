@@ -16,10 +16,10 @@
   flex-wrap: wrap;
   margin-top: 40px;
 }
-h2{
+#author{
   margin-top: 2px;
 }
-p{
+.poetryLine{
   margin-top: 2px;
 }
 .col {
