@@ -212,14 +212,17 @@ function App() {
               <button id="upload">Generate Poem</button>
             </form>
           </div>
-          {/* <p id="result">{poem}</p> */}
-          {/* <button id="generate" onClick={makeGenerated}>generate</button> */}
-          {/* <p id="result">{generated_text}</p> */}
           <div className="col">
+            {/* comment out the following four lines for UI testing */}
             {title === "" ? <p></p> : <p id="title">{title}</p>}
             {author === "" ? <p></p> : <p id="author">{author}</p>}
             {result === [] ? <p></p> : result.map((r, i) =>
               (<p className="poetryLine" key={i}>{r}</p>))}
+            {/* uncomment the following lines for testing */}
+            {/* <p id="title">title</p>
+            <p id="author">author</p>
+            <p className="poetryLine">line1</p>
+            <p className="poetryLine">line2</p> */}
           </div>
         </div>
       </div>
