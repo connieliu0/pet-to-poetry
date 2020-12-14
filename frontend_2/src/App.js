@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import FastAverageColor from 'fast-average-color';
 import './App.css';
 // const { HostedModel } = require('@runwayml/hosted-models');
-const unirest = require('unirest');
+// const unirest = require('unirest');
 
 function App() {
   const fac = new FastAverageColor()
@@ -57,24 +57,24 @@ function App() {
     return poemlst.sort(sadPoemCompare);
   }
 
-  const getPoetry = (term, isHappy) => {
-    const url = isHappy ?
-      `https://poetrydb.org/lines,linecount/${term};14` :
-      `https://poetrydb.org/lines/${term}`
-    unirest.get(url).then(res => {
-      const body = res.body;
-      // add a try block
-      console.log(body);
-      let real = body.filter(poem => searchLines(poem, term));
-      if (!isHappy) {
-        real = sortShortestSadPoetry(real)
-      }
-      console.log(real);
-      setAuthor(real[0].author);
-      setTitle(real[0].title);
-      setResult(real[0].lines);
-    })
-  }
+  // const getPoetry = (term, isHappy) => {
+  //   const url = isHappy ?
+  //     `https://poetrydb.org/lines,linecount/${term};14` :
+  //     `https://poetrydb.org/lines/${term}`
+  //   unirest.get(url).then(res => {
+  //     const body = res.body;
+  //     // add a try block
+  //     console.log(body);
+  //     let real = body.filter(poem => searchLines(poem, term));
+  //     if (!isHappy) {
+  //       real = sortShortestSadPoetry(real)
+  //     }
+  //     console.log(real);
+  //     setAuthor(real[0].author);
+  //     setTitle(real[0].title);
+  //     setResult(real[0].lines);
+  //   })
+  // }
 
   const changeImg = e => {
     e.preventDefault();
@@ -109,23 +109,23 @@ function App() {
     return strings
   }
 
-  const UseYolo = (data, isHappy) => {
-    fetch(`parseImages`,
-      {
-        method: "POST",
-        body: data,
-      }
-    )
-      .then(res => res.json())
-      .then(data => {
-        const res = data.yoloRes
-        const sorted = sortYoloData(res);
-        console.log(sorted);
-        const term = " " + sorted[0] + " "
-        console.log(term);
-        getPoetry(term, isHappy);
-      })
-  }
+  // const UseYolo = (data, isHappy) => {
+  //   fetch(`parseImages`,
+  //     {
+  //       method: "POST",
+  //       body: data,
+  //     }
+  //   )
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       const res = data.yoloRes
+  //       const sorted = sortYoloData(res);
+  //       console.log(sorted);
+  //       const term = " " + sorted[0] + " "
+  //       console.log(term);
+  //       getPoetry(term, isHappy);
+  //     })
+  // }
 
   const upload = e => {
     e.preventDefault();
@@ -134,7 +134,7 @@ function App() {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("filename", filename);
-    UseYolo(formData, color.isLight);
+    // UseYolo(formData, color.isLight);
   }
 
   // const setPoemStructure = value => {
@@ -198,8 +198,10 @@ function App() {
   // };
   return (
     <div className="App">
-      <div id="prompt">Upload a picture of your pet:</div>
-      <br />
+      <div className="row">
+      <div className="col">
+      <div id="prompt">Upload a picture of your pet that is dear to you to generate a poetic surprise</div>
+      <div className="photo">
       <form onSubmit={upload} encType="multipart/form-data">
         <input type="file" id="chooseImg" name="files" onChange={changeImg} />
         <br />
@@ -207,8 +209,9 @@ function App() {
           <img id="output" src={src} alt="uploaded" />
         }
         <br />
-        <button id="upload">upload</button>
+        <button id="upload">Generate Poem</button>
       </form>
+      </div>
       {/* <p id="result">{poem}</p> */}
       {/* <button id="generate" onClick={makeGenerated}>generate</button> */}
       {/* <p id="result">{generated_text}</p> */}
@@ -216,6 +219,13 @@ function App() {
       {author === "" ? <p></p> : <p id="author">{author}</p>}
       {result === [] ? <p></p> : result.map((r, i) =>
         (<p className="poetryLine" key={i}>{r}</p>))}
+      </div>
+      <div className="col">
+      <h1>Title</h1>
+      <h2>Author</h2>
+      <p>Resulting lines</p>
+      </div>
+      </div>
     </div>
   );
 }

@@ -1,11 +1,39 @@
 .App {
-  text-align: center;
-}
+  margin-left: 40px;
+  margin-right: 40px;
+  font-family: 'Aleo', serif;
 
+}
+@import url('https://fonts.googleapis.com/css2?family=Aleo:wght@400;700&display=swap');
 #prompt {
   margin-top: 10%;
-}
+  font-family: 'Aleo', serif;
 
+}
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 40px;
+}
+h2{
+  margin-top: 2px;
+}
+p{
+  margin-top: 2px;
+}
+.col {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin-right: 40px;
+}
+.photo{
+  margin-top: 20px;
+  background-color: lightgoldenrodyellow;
+  border: solid 50px lightsalmon;
+  padding: 20px;
+}
 #chooseImg {
   display: inline-block;
   margin-top: 1%;
