@@ -220,7 +220,7 @@ function App() {
       {result === [] ? <p></p> : result.map((r, i) =>
         (<p className="poetryLine" key={i}>{r}</p>))}
       </div>
-      <div className="col">
+      <div className="col poem">
       <h1>Title</h1>
       <h2>Author</h2>
       <p>Resulting lines</p>

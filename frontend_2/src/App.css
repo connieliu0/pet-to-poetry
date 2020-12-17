@@ -28,6 +28,9 @@ p{
   flex: 1;
   margin-right: 40px;
 }
+.poem{
+  background-image: url("./image8.png");
+}
 .photo{
   margin-top: 20px;
   background-color: lightgoldenrodyellow;
