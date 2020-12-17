@@ -5,6 +5,7 @@ References: Yolo v3 in Tensorflow by [Kaggle notebook](https://www.kaggle.com/ar
 
 After cloning this repo, follow the following steps to compile and start the project.
 
+
 ## Server compilation
 The server is written in Python v3. To compile the server, go to `/server` folder
 and follow the instructions below.
@@ -41,14 +42,15 @@ Save the weights using `load_weights.py` script.
 python load_weights.py
 ```
 
+
 ## Running the project
 After setting up the backend, we can start to run the project by going into 
 `/frontend_2` folder and enter command `yarn dev`.
 
-The command assumes that users are running this porject on a windows OS. If you
-are using a MacOS, go into `/frontend_2/package.json` and change the `server` into
+The commands above assume that users are running this porject on a windows OS. If you
+are using a MacOS, go into `/frontend_2/package.json` and change `server` into
 ```
-"cd .. && cd server && . venv/bin/activate && flask run --no-debugger"
+"server": "cd .. && cd server && . venv/bin/activate && flask run --no-debugger",
 ```
 
 After the project is launched, follow the instructions on the website. Click 
