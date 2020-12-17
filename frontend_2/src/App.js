@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import FastAverageColor from 'fast-average-color';
 import './App.css';
-// const unirest = require('unirest');
+const unirest = require('unirest');
 
 function App() {
   const fac = new FastAverageColor()
@@ -56,24 +56,24 @@ function App() {
     return poemlst.sort(sadPoemCompare);
   }
 
-  // const getPoetry = (term, isHappy) => {
-  //   const url = isHappy ?
-  //     `https://poetrydb.org/lines,linecount/${term};14` :
-  //     `https://poetrydb.org/lines/${term}`
-  //   unirest.get(url).then(res => {
-  //     const body = res.body;
-  //     // add a try block
-  //     console.log(body);
-  //     let real = body.filter(poem => searchLines(poem, term));
-  //     if (!isHappy) {
-  //       real = sortShortestSadPoetry(real)
-  //     }
-  //     console.log(real);
-  //     setAuthor(real[0].author);
-  //     setTitle(real[0].title);
-  //     setResult(real[0].lines);
-  //   })
-  // }
+  const getPoetry = (term, isHappy) => {
+    const url = isHappy ?
+      `https://poetrydb.org/lines,linecount/${term};14` :
+      `https://poetrydb.org/lines/${term}`
+    unirest.get(url).then(res => {
+      const body = res.body;
+      // add a try block
+      console.log(body);
+      let real = body.filter(poem => searchLines(poem, term));
+      if (!isHappy) {
+        real = sortShortestSadPoetry(real)
+      }
+      console.log(real);
+      setAuthor(real[0].author);
+      setTitle(real[0].title);
+      setResult(real[0].lines);
+    })
+  }
 
   const changeImg = e => {
     e.preventDefault();
@@ -108,23 +108,23 @@ function App() {
     return strings
   }
 
-  // const UseYolo = (data, isHappy) => {
-  //   fetch(`parseImages`,
-  //     {
-  //       method: "POST",
-  //       body: data,
-  //     }
-  //   )
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       const res = data.yoloRes
-  //       const sorted = sortYoloData(res);
-  //       console.log(sorted);
-  //       const term = " " + sorted[0] + " "
-  //       console.log(term);
-  //       getPoetry(term, isHappy);
-  //     })
-  // }
+  const UseYolo = (data, isHappy) => {
+    fetch(`parseImages`,
+      {
+        method: "POST",
+        body: data,
+      }
+    )
+      .then(res => res.json())
+      .then(data => {
+        const res = data.yoloRes
+        const sorted = sortYoloData(res);
+        console.log(sorted);
+        const term = " " + sorted[0] + " "
+        console.log(term);
+        getPoetry(term, isHappy);
+      })
+  }
 
   const upload = e => {
     e.preventDefault();
@@ -133,7 +133,7 @@ function App() {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("filename", filename);
-    // UseYolo(formData, color.isLight);
+    UseYolo(formData, color.isLight);
   }
 
   // const setPoemStructure = value => {
@@ -197,11 +197,11 @@ function App() {
   // };
   return (
     <div className="App">
-    <div id="prompt"><p className="wavy">Upload a picture of your pet that is dear to you to generate a poetic surprise! Below are some examples to download to try out.</p></div>
+      <div id="prompt"><p className="wavy">Upload a picture of your pet that is dear to you to generate a poetic surprise! Below are some examples to download to try out.</p></div>
       <div className="row">
-      <img src="dog.jpg" alt="dog"/>
-      <img src="fish.jpg" alt="fish"/>
-      <img src="cat.jpg" alt="cat"/>
+        <img src="dog.jpg" alt="dog" />
+        <img src="fish.jpg" alt="fish" />
+        <img src="cat.jpg" alt="cat" />
       </div>
       <div className="row">
         <div className="col">
@@ -214,24 +214,19 @@ function App() {
               }
               <br />
               <div className="row">
-              <button id="upload">Generate Poem</button>
+                <button id="upload">Generate Poem</button>
               </div>
             </form>
           </div>
-          </div>
-          <div className="col poem">
-            {/* comment out the following four lines for UI testing */}
-            {/* {title === "" ? <p></p> : <p id="title">{title}</p>}
-            {author === "" ? <p></p> : <p id="author">{author}</p>}
-            {result === [] ? <p></p> : result.map((r, i) =>
-              (<p className="poetryLine" key={i}>{r}</p>))} */}
-            {/* uncomment the following lines for testing */}
-            <p id="title">title</p>
-            <p id="author">author</p>
-            <p className="poetryLine">line1</p>
-            <p className="poetryLine">line2</p>
         </div>
-    </div>
+        <div className="col poem">
+          {/* comment out the following four lines for UI testing */}
+          {title === "" ? <p></p> : <p id="title">{title}</p>}
+          {author === "" ? <p></p> : <p id="author">{author}</p>}
+          {result === [] ? <p></p> : result.map((r, i) =>
+            (<p className="poetryLine" key={i}>{r}</p>))}
+        </div>
+      </div>
     </div>
   );
 }
