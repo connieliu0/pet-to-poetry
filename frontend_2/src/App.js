@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import FastAverageColor from 'fast-average-color';
 import './App.css';
-// const { HostedModel } = require('@runwayml/hosted-models');
 // const unirest = require('unirest');
 
 function App() {
@@ -198,34 +197,41 @@ function App() {
   // };
   return (
     <div className="App">
+    <div id="prompt">Upload a picture of your pet that is dear to you to generate a poetic surprise! Below are some examples to try out.</div>
       <div className="row">
-      <div className="col">
-      <div id="prompt">Upload a picture of your pet that is dear to you to generate a poetic surprise</div>
-      <div className="photo">
-      <form onSubmit={upload} encType="multipart/form-data">
-        <input type="file" id="chooseImg" name="files" onChange={changeImg} />
-        <br />
-        {src !== "" &&
-          <img id="output" src={src} alt="uploaded" />
-        }
-        <br />
-        <button id="upload">Generate Poem</button>
-      </form>
+      <img src="dog.jpg" alt="dog"/>
+      <img src="fish.jpg" alt="fish"/>
+      <img src="cat.jpg" alt="cat"/>
       </div>
-      {/* <p id="result">{poem}</p> */}
-      {/* <button id="generate" onClick={makeGenerated}>generate</button> */}
-      {/* <p id="result">{generated_text}</p> */}
-      {title === "" ? <p></p> : <p id="title">{title}</p>}
-      {author === "" ? <p></p> : <p id="author">{author}</p>}
-      {result === [] ? <p></p> : result.map((r, i) =>
-        (<p className="poetryLine" key={i}>{r}</p>))}
-      </div>
-      <div className="col poem">
-      <h1>Title</h1>
-      <h2>Author</h2>
-      <p>Resulting lines</p>
-      </div>
-      </div>
+      <div className="row">
+        <div className="col">
+          <div className="photo">
+            <form onSubmit={upload} encType="multipart/form-data">
+              <input type="file" id="chooseImg" name="files" onChange={changeImg} />
+              <br />
+              {src !== "" &&
+                <img id="output" src={src} alt="uploaded" />
+              }
+              <br />
+              <div className="row">
+              <button id="upload">Generate Poem</button>
+              </div>
+            </form>
+          </div>
+          </div>
+          <div className="col poem">
+            {/* comment out the following four lines for UI testing */}
+            {/* {title === "" ? <p></p> : <p id="title">{title}</p>}
+            {author === "" ? <p></p> : <p id="author">{author}</p>}
+            {result === [] ? <p></p> : result.map((r, i) =>
+              (<p className="poetryLine" key={i}>{r}</p>))} */}
+            {/* uncomment the following lines for testing */}
+            <p id="title">title</p>
+            <p id="author">author</p>
+            <p className="poetryLine">line1</p>
+            <p className="poetryLine">line2</p>
+        </div>
+    </div>
     </div>
   );
 }
