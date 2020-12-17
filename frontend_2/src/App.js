@@ -197,7 +197,7 @@ function App() {
   // };
   return (
     <div className="App">
-    <div id="prompt">Upload a picture of your pet that is dear to you to generate a poetic surprise! Below are some examples to try out.</div>
+    <div id="prompt"><p className="wavy">Upload a picture of your pet that is dear to you to generate a poetic surprise! Below are some examples to download to try out.</p></div>
       <div className="row">
       <img src="dog.jpg" alt="dog"/>
       <img src="fish.jpg" alt="fish"/>
