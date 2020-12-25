@@ -1,8 +1,11 @@
-# fa20-research
+# Pet to Poetry - Fall 2020 Research Project
+## About
+Upload a picture of a pet, and the YOLO algorithm will then recognize the pet in it. Then it will query the pet in the [PoetryDB](https://poetrydb.org/index.html) and send back a poem that mentions that pet. Depending on the brightness of the photo, you may get differing results! Let's see what poems are related to your pet!
+This project was created by Bo Hu and Connie Liu.
+Although this project is not currently hosted online, you can view a video demo here (insert youtube link).
 
-This project parses uploaded images and returns a poetry about it. <br> <br>
+<br> <br>
 References: Yolo v3 in Tensorflow by [Kaggle notebook](https://www.kaggle.com/aruchomu/yolo-v3-object-detection-in-tensorflow) 
-
 After cloning this repo, follow the following steps to compile and start the project.
 
 
