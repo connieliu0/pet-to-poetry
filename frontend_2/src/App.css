@@ -1,12 +1,11 @@
 .App {
-  margin-left: 100px;
-  margin-right: 100px;
+  margin-left: 200px;
+  margin-right: 250px;
   font-family: 'Aleo', serif;
   margin-bottom: 60px;
 }
 @import url('https://fonts.googleapis.com/css2?family=Aleo:wght@400;700&display=swap');
 #prompt {
-  margin-top: 10%;
   font-family: 'Aleo', serif;
   font-size:20px;
   text-align: center;
@@ -16,6 +15,7 @@
   text-decoration-line: underline;
   text-decoration-style: wavy;
   text-decoration-color: #FFE5CD;
+  margin-top: 5%;
 }
 .row {
   justify-content: center;
@@ -77,7 +77,7 @@ box-shadow: 0px 0px 24px 6px rgba(0,0,0,0.39);
 #upload{
   margin-top: 2%;
   margin-top: 0px;
-    background-color:#fffac7;
+    background-color:#FFE5CD;
     border:3px solid #48a1af;
     display:inline-block;
     cursor:pointer;

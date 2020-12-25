@@ -197,7 +197,8 @@ function App() {
   // };
   return (
     <div className="App">
-    <div id="prompt"><p className="wavy">Upload a picture of your pet that is dear to you to generate a poetic surprise! Below are some examples to download to try out.</p></div>
+    <div id="prompt">
+      <p className="wavy">Upload a picture of your pet that is dear to you to generate a poetic surprise!<br/> Below are some examples to download to try out.</p></div>
       <div className="row">
       <img src="dog.jpg" alt="dog"/>
       <img src="fish.jpg" alt="fish"/>
@@ -232,6 +233,9 @@ function App() {
             <p className="poetryLine">line2</p>
         </div>
     </div>
+    <h3 className="wavy">About this Project</h3>
+<p>Upload a picture of a pet, and the <a href="https://www.kaggle.com/aruchomu/yolo-v3-object-detection-in-tensorflow">YOLO algorithm</a> will then recognize the pet in it. Then it will query the pet in the <a href="https://poetrydb.org/index.html">PoetryDB</a> and send back a real-life poem that mentions that pet. Depending on the brightness of the photo, you may get differing results - let's see what poems are related to your pet! This project was created by Bo Hu and Connie Liu during the Fall of 2020 under the Designing AI Lab.
+</p>
     </div>
   );
 }
