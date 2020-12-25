@@ -108,23 +108,23 @@ function App() {
     return strings
   }
 
-  // const UseYolo = (data, isHappy) => {
-  //   fetch(`parseImages`,
-  //     {
-  //       method: "POST",
-  //       body: data,
-  //     }
-  //   )
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       const res = data.yoloRes
-  //       const sorted = sortYoloData(res);
-  //       console.log(sorted);
-  //       const term = " " + sorted[0] + " "
-  //       console.log(term);
-  //       getPoetry(term, isHappy);
-  //     })
-  // }
+  const UseYolo = (data, isHappy) => {
+    fetch(`parseImages`,
+      {
+        method: "POST",
+        body: data,
+      }
+    )
+      .then(res => res.json())
+      .then(data => {
+        const res = data.yoloRes
+        const sorted = sortYoloData(res);
+        console.log(sorted);
+        const term = " " + sorted[0] + " "
+        console.log(term);
+        // getPoetry(term, isHappy);
+      })
+  }
 
   const upload = e => {
     e.preventDefault();
@@ -133,7 +133,7 @@ function App() {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("filename", filename);
-    // UseYolo(formData, color.isLight);
+    UseYolo(formData, color.isLight);
   }
 
   // const setPoemStructure = value => {
@@ -197,12 +197,11 @@ function App() {
   // };
   return (
     <div className="App">
-    <div id="prompt">
-      <p className="wavy">Upload a picture of your pet that is dear to you to generate a poetic surprise!<br/> Below are some examples to download to try out.</p></div>
+      <div id="prompt"><p className="wavy">Upload a picture of your pet that is dear to you to generate a poetic surprise!<br/> Below are some examples to download to try out.</p></div>
       <div className="row">
-      <img src="dog.jpg" alt="dog"/>
-      <img src="fish.jpg" alt="fish"/>
-      <img src="cat.jpg" alt="cat"/>
+        <img src="dog.jpg" alt="dog" />
+        <img src="fish.jpg" alt="fish" />
+        <img src="cat.jpg" alt="cat" />
       </div>
       <div className="row">
         <div className="col">
@@ -215,28 +214,23 @@ function App() {
               }
               <br />
               <div className="row">
-              <button id="upload">Generate Poem</button>
+                <button id="upload">Generate Poem</button>
               </div>
             </form>
           </div>
-          </div>
-          <div className="col poem">
-            {/* comment out the following four lines for UI testing */}
-            {/* {title === "" ? <p></p> : <p id="title">{title}</p>}
-            {author === "" ? <p></p> : <p id="author">{author}</p>}
-            {result === [] ? <p></p> : result.map((r, i) =>
-              (<p className="poetryLine" key={i}>{r}</p>))} */}
-            {/* uncomment the following lines for testing */}
-            <p id="title">title</p>
-            <p id="author">author</p>
-            <p className="poetryLine">line1</p>
-            <p className="poetryLine">line2</p>
         </div>
-    </div>
-    <h3 className="wavy">About this Project</h3>
+        <div className="col poem">
+          {/* comment out the following four lines for UI testing */}
+          {title === "" ? <p></p> : <p id="title">{title}</p>}
+          {author === "" ? <p></p> : <p id="author">{author}</p>}
+          {result === [] ? <p></p> : result.map((r, i) =>
+            (<p className="poetryLine" key={i}>{r}</p>))}
+        </div>
+        </div>
+        <h3 className="wavy">About this Project</h3>
 <p>Upload a picture of a pet, and the <a href="https://www.kaggle.com/aruchomu/yolo-v3-object-detection-in-tensorflow">YOLO algorithm</a> will then recognize the pet in it. Then it will query the pet in the <a href="https://poetrydb.org/index.html">PoetryDB</a> and send back a real-life poem that mentions that pet. Depending on the brightness of the photo, you may get differing results - let's see what poems are related to your pet! This project was created by Bo Hu and Connie Liu during the Fall of 2020 under the Designing AI Lab.
 </p>
-    </div>
+      </div>
   );
 }
 
